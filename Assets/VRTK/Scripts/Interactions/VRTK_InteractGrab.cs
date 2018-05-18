@@ -3,7 +3,7 @@ namespace VRTK
 {
     using UnityEngine;
     using System.Collections;
-
+   
     /// <summary>
     /// The Interact Grab script is attached to a Controller object and requires the `VRTK_ControllerEvents` script to be attached as it uses this for listening to the controller button events for grabbing and releasing interactable game objects.
     /// </summary>
@@ -495,7 +495,7 @@ namespace VRTK
         }
 
         protected virtual GameObject GetGrabbableObject()
-        {
+        { 
             GameObject obj = (interactTouch != null ? interactTouch.GetTouchedObject() : null);
             if (obj != null && interactTouch.IsObjectInteractable(obj))
             {
@@ -538,11 +538,13 @@ namespace VRTK
         {
             GameObject objectToGrab = GetGrabbableObject();
             if (objectToGrab != null)
-            {
+            {              
+                VRTK.VRTK_ConsoleViewer.print(objectToGrab.name);
                 PerformGrabAttempt(objectToGrab);
             }
             else
             {
+               // VRTK.VRTK_ConsoleViewer.print("Отпустил");
                 grabPrecognitionTimer = Time.time + grabPrecognition;
             }
         }
@@ -589,6 +591,7 @@ namespace VRTK
         {
             if (CanRelease() && (IsObjectHoldOnGrab(grabbedObject) || grabEnabledState >= 2))
             {
+               // VRTK.VRTK_ConsoleViewer.print("Отпустил"); // Отпустил сам (Не работается если оторвалось)
                 InitUngrabbedObject(true);
             }
         }
@@ -601,7 +604,12 @@ namespace VRTK
 
         protected virtual void DoReleaseObject(object sender, ControllerInteractionEventArgs e)
         {
-            AttemptReleaseObject();
+            GameObject objectToGrab = GetGrabbableObject(); //получение активного объекта
+            if (objectToGrab != null)
+            {
+                VRTK.VRTK_ConsoleViewer.print("Отупсил");
+            }
+            AttemptReleaseObject(); 
             OnGrabButtonReleased(controllerEvents.SetControllerEvent(ref grabPressed, false));
         }
 

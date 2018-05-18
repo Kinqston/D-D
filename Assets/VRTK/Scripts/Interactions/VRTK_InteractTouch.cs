@@ -91,6 +91,7 @@ namespace VRTK
             if (ControllerStartTouchInteractableObject != null)
             {
                 ControllerStartTouchInteractableObject(this, e);
+                
             }
         }
 
@@ -99,6 +100,7 @@ namespace VRTK
             if (ControllerTouchInteractableObject != null)
             {
                 ControllerTouchInteractableObject(this, e);
+                
             }
         }
 
@@ -300,7 +302,6 @@ namespace VRTK
         protected virtual void OnTriggerStay(Collider collider)
         {
             GameObject colliderInteractableObject = TriggerStart(collider);
-
             if (touchedObject == null || collider.transform.IsChildOf(touchedObject.transform))
             {
                 triggerIsColliding = true;
