@@ -30,6 +30,7 @@ namespace VRTK
     [AddComponentMenu("VRTK/Scripts/Interactions/VRTK_InteractGrab")]
     public class VRTK_InteractGrab : MonoBehaviour
     {
+        public GameObject GameController;
         [Header("Grab Settings")]
 
         [Tooltip("The button used to grab/release a touched object.")]
@@ -107,6 +108,7 @@ namespace VRTK
         {
             if (ControllerGrabInteractableObject != null)
             {
+               
                 ControllerGrabInteractableObject(this, e);
             }
         }
@@ -115,6 +117,7 @@ namespace VRTK
         {
             if (ControllerStartUngrabInteractableObject != null)
             {
+                
                 ControllerStartUngrabInteractableObject(this, e);
             }
         }
@@ -123,6 +126,7 @@ namespace VRTK
         {
             if (ControllerUngrabInteractableObject != null)
             {
+               
                 ControllerUngrabInteractableObject(this, e);
             }
         }
@@ -377,9 +381,11 @@ namespace VRTK
         {
             if (obj != null)
             {
+               // GameController.GetComponent<GameController>().item = obj;
                 VRTK_InteractableObject objScript = obj.GetComponent<VRTK_InteractableObject>();
                 return (objScript != null && objScript.holdButtonToGrab);
             }
+           // GameController.GetComponent<GameController>().item = null;
             return false;
         }
 
@@ -447,7 +453,7 @@ namespace VRTK
         protected virtual void InitSecondaryGrab(VRTK_InteractableObject currentGrabbedObject)
         {
             if (!currentGrabbedObject.IsValidInteractableController(gameObject, currentGrabbedObject.allowedGrabControllers))
-            {
+            {                
                 grabbedObject = null;
                 influencingGrabbedObject = false;
                 currentGrabbedObject.Ungrabbed(this);
@@ -489,7 +495,7 @@ namespace VRTK
             }
 
             CheckInfluencingObjectOnRelease();
-
+            VRTK.VRTK_ConsoleViewer.print("Проебал"); //Когда теряется объект
             grabEnabledState = 0;
             grabbedObject = null;
         }
@@ -538,7 +544,8 @@ namespace VRTK
         {
             GameObject objectToGrab = GetGrabbableObject();
             if (objectToGrab != null)
-            {              
+            {
+                GameController.GetComponent<GameController>().item = objectToGrab;
                 VRTK.VRTK_ConsoleViewer.print(objectToGrab.name);
                 PerformGrabAttempt(objectToGrab);
             }
@@ -607,7 +614,8 @@ namespace VRTK
             GameObject objectToGrab = GetGrabbableObject(); //получение активного объекта
             if (objectToGrab != null)
             {
-                VRTK.VRTK_ConsoleViewer.print("Отупсил");
+                GameController.GetComponent<GameController>().item = null;
+               // VRTK.VRTK_ConsoleViewer.print("Отупсил");
             }
             AttemptReleaseObject(); 
             OnGrabButtonReleased(controllerEvents.SetControllerEvent(ref grabPressed, false));
